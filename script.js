@@ -109,19 +109,46 @@ sections.forEach(s => {
 });
 
 /* ---- CONTACT FORM ---- */
-const form = document.getElementById('contactForm');
-const formSuccess = document.getElementById('formSuccess');
+// Handled natively by Formspree — no JS needed.
 
-form?.addEventListener('submit', async e => {
-  e.preventDefault();
-  const btn = form.querySelector('.cf-submit');
-  const span = btn.querySelector('span');
-  span.textContent = 'Sending…';
-  btn.disabled = true;
-  btn.style.opacity = '.65';
-  await new Promise(r => setTimeout(r, 1400));
-  form.style.display = 'none';
-  formSuccess.style.display = 'flex';
+/* ---- PHONE VALIDATION ---- */
+const phoneInput = document.getElementById('phone');
+const phoneError = document.getElementById('phoneError');
+
+function formatPhone(val) {
+  const digits = val.replace(/\D/g, '').slice(0, 10);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+}
+
+function isValidPhone(val) {
+  return val.replace(/\D/g, '').length === 10;
+}
+
+phoneInput?.addEventListener('input', () => {
+  phoneInput.value = formatPhone(phoneInput.value);
+  if (phoneInput.classList.contains('invalid')) {
+    const valid = isValidPhone(phoneInput.value);
+    phoneInput.classList.toggle('invalid', !valid);
+    phoneError.style.display = valid ? 'none' : 'block';
+  }
+});
+
+phoneInput?.addEventListener('blur', () => {
+  if (phoneInput.value === '') return;
+  const valid = isValidPhone(phoneInput.value);
+  phoneInput.classList.toggle('invalid', !valid);
+  phoneError.style.display = valid ? 'none' : 'block';
+});
+
+document.getElementById('contactForm')?.addEventListener('submit', e => {
+  if (phoneInput && !isValidPhone(phoneInput.value)) {
+    e.preventDefault();
+    phoneInput.classList.add('invalid');
+    phoneError.style.display = 'block';
+    phoneInput.focus();
+  }
 });
 
 /* ---- STAGGERED CARD ENTRANCE ---- */

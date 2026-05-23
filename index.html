@@ -506,6 +506,12 @@
             </div>
           </div>
           <div class="cf-group">
+  <label for="phone">Phone Number</label>
+  <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" required />
+  <span class="cf-error" id="phoneError">Please enter a valid US phone number.</span>
+</div>
+
+          <div class="cf-group">
             <label for="service">Service Type</label>
             <select id="service" name="service" required>
               <option value="" disabled selected>Select a service…</option>
@@ -537,6 +543,32 @@
     </div>
   </section>
 
+  <!-- ===== PAYMENT ===== -->
+  <section class="payment" id="payment">
+    <div class="section-intro reveal-up">
+      <span class="label">Payment</span>
+      <h2>We Accept</h2>
+      <p>Simple, flexible payment — whichever works best for you.</p>
+    </div>
+    <div class="payment-cards">
+      <div class="payment-card reveal-up" style="--d:0s">
+        <div class="payment-icon">💜</div>
+        <strong>Zelle</strong>
+        <span>Fast &amp; easy<br>digital transfer</span>
+      </div>
+      <div class="payment-card reveal-up" style="--d:.08s">
+        <div class="payment-icon">💵</div>
+        <strong>Cash</strong>
+        <span>Accepted at time<br>of service</span>
+      </div>
+      <div class="payment-card reveal-up" style="--d:.16s">
+        <div class="payment-icon">📝</div>
+        <strong>Check</strong>
+        <span>Made out to<br>Ana's Care Cleaning</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-top">
@@ -557,7 +589,7 @@
       <div class="footer-contact">
         <a href="tel:7176236050">(717) 623-6050</a>
         <a href="https://wa.me/17176236050" target="_blank" rel="noopener">WhatsApp</a>
-        <a href="mailto:totalcarecleaning@gmail.com">totalcarecleaning@gmail.com</a>
+        <a href="mailto:totalcarecleaning@gmail.com">totalcarecleaningnj@gmail.com</a>
         <a href="https://www.instagram.com/anascarecleaning/" target="_blank" rel="noopener">@anascarecleaning</a>
       </div>
     </div>
