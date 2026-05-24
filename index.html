@@ -7,20 +7,16 @@
   <title>Ana's Care Cleaning — Premium Home Cleaning in New Jersey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/jpeg" href="img/logo.jpeg" />
 </head>
 <body>
 
-  <!-- Custom Cursor -->
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
-
   <!-- ===== NAV ===== -->
   <nav id="nav">
     <a href="#" class="nav-logo">
-      <img src="img/logo.jpeg" alt="Ana's Care Cleaning" />
+      <img src="img/logo.jpeg" alt="Ana's Care Cleaning" loading="lazy" />
       <span>Ana's Care</span>
     </a>
     <ul class="nav-links">
@@ -50,7 +46,6 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
-    <div class="hero-noise"></div>
     <div class="hero-gradient"></div>
 
     <div class="hero-content">
@@ -100,17 +95,14 @@
 
     <div class="hero-visual reveal-right">
       <div class="hero-main-img">
-        <!-- REPLACE src with 1.jpg -->
-        <img src="img/1.jpg" alt="Ana's Care Cleaning — spotless home" onerror="this.parentElement.classList.add('img-placeholder')" />
+        <img src="img/1.jpg" alt="Ana's Care Cleaning — spotless home" loading="eager" onerror="this.parentElement.classList.add('img-placeholder')" />
         <div class="img-overlay"></div>
       </div>
       <div class="hero-img-sm top-right">
-        <!-- REPLACE src with 2.jpg -->
-        <img src="img/6.jpeg" alt="Clean living space" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
+        <img src="img/6.jpeg" alt="Clean living space" loading="lazy" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
       </div>
       <div class="hero-img-sm bottom-left">
-        <!-- REPLACE src with 3.jpg -->
-        <img src="img/8.jpeg" alt="Detail cleaning" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
+        <img src="img/8.jpeg" alt="Detail cleaning" loading="lazy" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
       </div>
       <div class="hero-float-badge">
         <strong>Insured &amp; Trusted</strong>
@@ -133,7 +125,6 @@
       <span>✦ Eco-Friendly Products</span>
       <span>✦ Post-Construction</span>
       <span>✦ Regular Maintenance</span>
-      <!-- duplicate -->
       <span>✦ Residential Cleaning</span>
       <span>✦ Deep Cleaning</span>
       <span>✦ Move In / Move Out</span>
@@ -212,16 +203,16 @@
     </div>
     <div class="gallery-grid">
       <div class="gallery-item gi-large reveal-scale">
-        <img src="img/3.jpg" alt="Clean home after Ana's Care" onerror="this.parentElement.classList.add('gph')" />
+        <img src="img/3.jpg" alt="Clean home after Ana's Care" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
       </div>
       <div class="gallery-item reveal-scale" style="--d:.1s">
-        <img src="img/8.jpeg" alt="Sparkling kitchen" onerror="this.parentElement.classList.add('gph')" />
+        <img src="img/8.jpeg" alt="Sparkling kitchen" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
       </div>
       <div class="gallery-item reveal-scale" style="--d:.2s">
-        <img src="img/5.jpeg" alt="Pristine bathroom" onerror="this.parentElement.classList.add('gph')" />
+        <img src="img/5.jpeg" alt="Pristine bathroom" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
       </div>
       <div class="gallery-item gi-wide reveal-scale" style="--d:.3s">
-        <img src="img/7.jpeg" alt="Detailed cleaning result" onerror="this.parentElement.classList.add('gph')" />
+        <img src="img/7.jpeg" alt="Detailed cleaning result" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
       </div>
     </div>
   </section>
@@ -235,33 +226,44 @@
     </div>
 
     <div class="reel-grid">
-      <!-- tall left feature -->
-      <div class="reel-item reel-tall reveal-scale" style="--d:0s">
-        <video data-src="img/video1.mp4" muted loop playsinline></video>
+      <div class="reel-item reel-tall reveal-scale" style="--d:0s" data-video="img/video1.mp4">
+        <div class="reel-thumb">
+          <div class="reel-play-icon" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="reel-overlay"></div>
       </div>
-
-      <!-- top-right 2-col stack -->
-      <div class="reel-item reveal-scale" style="--d:.08s">
-        <video data-src="img/video2.mp4" muted loop playsinline></video>
+      <div class="reel-item reveal-scale" style="--d:.08s" data-video="img/video2.mp4">
+        <div class="reel-thumb">
+          <div class="reel-play-icon" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="reel-overlay"></div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.14s">
-        <video data-src="img/video3.mp4" muted loop playsinline></video>
+      <div class="reel-item reveal-scale" style="--d:.14s" data-video="img/video3.mp4">
+        <div class="reel-thumb">
+          <div class="reel-play-icon" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="reel-overlay"></div>
       </div>
-
-      <!-- wide bottom row -->
-      <div class="reel-item reveal-scale" style="--d:.2s">
-        <video data-src="img/video4.mp4" muted loop playsinline></video>
+      <div class="reel-item reveal-scale" style="--d:.2s" data-video="img/video4.mp4">
+        <div class="reel-thumb">
+          <div class="reel-play-icon" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="reel-overlay"></div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.26s">
-        <video data-src="img/video5.mp4" muted loop playsinline></video>
-        <div class="reel-overlay"></div>
-      </div>
-      <div class="reel-item reveal-scale" style="--d:.32s">
-        <video data-src="img/video6.mp4" muted loop playsinline></video>
+      <div class="reel-item reveal-scale" style="--d:.26s" data-video="img/video5.mp4">
+        <div class="reel-thumb">
+          <div class="reel-play-icon" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="reel-overlay"></div>
       </div>
     </div>
@@ -348,10 +350,10 @@
     </div>
     <div class="why-visual reveal-right">
       <div class="why-img-main">
-        <img src="img/7.jpeg" alt="Ana's Care team at work" onerror="this.parentElement.classList.add('why-ph')" />
+        <img src="img/7.jpeg" alt="Ana's Care team at work" loading="lazy" onerror="this.parentElement.classList.add('why-ph')" />
       </div>
       <div class="why-img-accent">
-        <img src="img/8.jpeg" alt="Spotless result" onerror="this.parentElement.classList.add('why-ph-sm')" />
+        <img src="img/8.jpeg" alt="Spotless result" loading="lazy" onerror="this.parentElement.classList.add('why-ph-sm')" />
       </div>
       <div class="why-rating-badge">
         <div class="wrb-stars">★★★★★</div>
@@ -432,7 +434,7 @@
           <span>Asbury Park</span>
           <span>Eatontown</span>
           <span>Deal</span>
-          <span class="area-highlight" >Monmouth Beach</span>
+          <span class="area-highlight">Monmouth Beach</span>
           <span>Allenhurst</span>
           <span>Bradley Beach</span>
           <span>Long branch</span>
@@ -489,12 +491,17 @@
       </div>
 
       <div class="contact-right reveal-right">
-        <form 
-        action="https://formspree.io/f/mkoezqkp"
-        method="POST"
-        id="contactForm" 
-        class="c-form" 
-        novalidate>
+        <!-- Formspree native form — no JS interception -->
+        <form
+          action="https://formspree.io/f/mkoezqkp"
+          method="POST"
+          id="contactForm"
+          class="c-form"
+          novalidate>
+
+          <!-- Honeypot anti-bot field — hidden from real users -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
           <div class="cf-row">
             <div class="cf-group">
               <label for="firstName">First Name</label>
@@ -510,7 +517,6 @@
             <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required />
             <span class="cf-error" id="phoneError">Please enter a valid US phone number.</span>
           </div>
-
           <div class="cf-group">
             <label for="service">Service Type</label>
             <select id="service" name="service" required>
@@ -531,13 +537,6 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
           </button>
         </form>
-        <div id="formSuccess" class="form-success">
-          <span>✓</span>
-          <div>
-            <strong>Request Received!</strong>
-            <p>Ana will reach out personally within a few hours to confirm your booking.</p>
-          </div>
-        </div>
         <p class="form-alt">Prefer to chat instantly? <a href="https://wa.me/17176236050" target="_blank" rel="noopener">Message us on WhatsApp →</a></p>
       </div>
     </div>
@@ -573,7 +572,7 @@
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="img/logo.jpeg" alt="Ana's Care Cleaning" />
+        <img src="img/logo.jpeg" alt="Ana's Care Cleaning" loading="lazy" />
         <div>
           <strong>Ana's Care Cleaning</strong>
           <span>Serving New Jersey with care &amp; precision</span>
