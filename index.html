@@ -202,20 +202,64 @@
       <h2>Every Room,<br><em>Transformed</em></h2>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item gi-large reveal-scale">
+      <div class="gallery-item gi-large reveal-scale" data-lightbox="0">
         <img src="/img/3.jpg" alt="Clean home after Ana's Care" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+        <div class="gallery-zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+        </div>
       </div>
-      <div class="gallery-item reveal-scale" style="--d:.1s">
+      <div class="gallery-item reveal-scale" style="--d:.1s" data-lightbox="1">
         <img src="/img/8.jpeg" alt="Sparkling kitchen" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+        <div class="gallery-zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+        </div>
       </div>
-      <div class="gallery-item reveal-scale" style="--d:.2s">
+      <div class="gallery-item reveal-scale" style="--d:.2s" data-lightbox="2">
         <img src="/img/5.jpeg" alt="Pristine bathroom" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+        <div class="gallery-zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+        </div>
       </div>
-      <div class="gallery-item gi-wide reveal-scale" style="--d:.3s">
+      <div class="gallery-item gi-wide reveal-scale" style="--d:.3s" data-lightbox="3">
         <img src="/img/7.jpeg" alt="Detailed cleaning result" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+        <div class="gallery-zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Photo Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="lb-stage">
+      <img id="lbImg" src="" alt="" />
+      <span class="lb-counter" id="lbCounter"></span>
+    </div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="videoModal">
+    <div class="vm-backdrop" id="vmBackdrop"></div>
+    <div class="vm-stage">
+      <button class="vm-close" id="vmClose" aria-label="Close video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <video id="vmVideo" controls playsinline></video>
+      <div class="vm-badge">
+        <img src="/img/logo.jpeg" alt="" />
+        <span>Ana's Care Cleaning</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== VIDEO REEL ===== -->
   <section class="reel" id="reel">
@@ -232,7 +276,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
+        <video class="reel-poster" src="/img/video1.mp4" muted playsinline preload="metadata"></video>
         <div class="reel-overlay"></div>
+        <div class="reel-badge">
+          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <span>Ana's Care Cleaning</span>
+        </div>
       </div>
       <div class="reel-item reveal-scale" style="--d:.08s" data-video="/img/video2.mp4">
         <div class="reel-thumb">
@@ -240,7 +289,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
+        <video class="reel-poster" src="/img/video2.mp4" muted playsinline preload="metadata"></video>
         <div class="reel-overlay"></div>
+        <div class="reel-badge">
+          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <span>Ana's Care Cleaning</span>
+        </div>
       </div>
       <div class="reel-item reveal-scale" style="--d:.14s" data-video="/img/video3.mp4">
         <div class="reel-thumb">
@@ -248,7 +302,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
+        <video class="reel-poster" src="/img/video3.mp4" muted playsinline preload="metadata"></video>
         <div class="reel-overlay"></div>
+        <div class="reel-badge">
+          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <span>Ana's Care Cleaning</span>
+        </div>
       </div>
       <div class="reel-item reveal-scale" style="--d:.2s" data-video="/img/video4.mp4">
         <div class="reel-thumb">
@@ -256,7 +315,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
+        <video class="reel-poster" src="/img/video4.mp4" muted playsinline preload="metadata"></video>
         <div class="reel-overlay"></div>
+        <div class="reel-badge">
+          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <span>Ana's Care Cleaning</span>
+        </div>
       </div>
       <div class="reel-item reveal-scale" style="--d:.26s" data-video="/img/video5.mp4">
         <div class="reel-thumb">
@@ -264,7 +328,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
+        <video class="reel-poster" src="/img/video5.mp4" muted playsinline preload="metadata"></video>
         <div class="reel-overlay"></div>
+        <div class="reel-badge">
+          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <span>Ana's Care Cleaning</span>
+        </div>
       </div>
     </div>
 
