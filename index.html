@@ -2,12 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e1f2d" />
   <meta name="description" content="Ana's Care Cleaning — Meticulous, trusted home cleaning across New Jersey. Book your cleaning today." />
   <title>Ana's Care Cleaning — Premium Home Cleaning in New Jersey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Animations are only armed when JS is running; if script.js never loads, content stays visible. -->
+  <script>
+    document.documentElement.classList.add('js');
+    setTimeout(function () { if (!window.__motionReady) document.documentElement.classList.remove('js'); }, 4000);
+  </script>
   <link rel="stylesheet" href="/styles.css" />
   <link rel="icon" type="image/jpeg" href="/img/logo.jpeg" />
 </head>
@@ -16,7 +22,7 @@
   <!-- ===== NAV ===== -->
   <nav id="nav">
     <a href="#" class="nav-logo">
-      <img src="/img/logo.jpeg" alt="Ana's Care Cleaning" loading="lazy" />
+      <img src="/img/opt/logo-96.webp" alt="Ana's Care Cleaning" width="44" height="44" />
       <span>Ana's Care</span>
     </a>
     <ul class="nav-links">
@@ -28,13 +34,13 @@
       <li><a href="#testimonials">Reviews</a></li>
       <li><a href="#contact" class="nav-cta">Book Now</a></li>
     </ul>
-    <button class="hamburger" aria-label="Menu">
+    <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
   <!-- Mobile Nav -->
-  <div class="mobile-nav">
+  <div class="mobile-nav" id="mobileNav">
     <a href="#services">Services</a>
     <a href="#gallery">Gallery</a>
     <a href="#reel">Reel</a>
@@ -42,6 +48,7 @@
     <a href="#areas">Areas</a>
     <a href="#testimonials">Reviews</a>
     <a href="#contact">Book Now</a>
+    <a href="tel:7176236050" class="mobile-nav-phone">Call (717) 623-6050</a>
   </div>
 
   <!-- ===== HERO ===== -->
@@ -54,10 +61,10 @@
         Serving New Jersey Since 2019
       </div>
 
-      <h1 class="hero-heading reveal-fade delay-1">
-        Your Home<br>
-        <em>Impeccably</em><br>
-        Cared For.
+      <h1 class="hero-heading">
+        <span class="line"><span class="line-in" style="--i:0">Your Home</span></span>
+        <span class="line"><em class="line-in" style="--i:1">Impeccably</em></span>
+        <span class="line"><span class="line-in" style="--i:2">Cared For.</span></span>
       </h1>
 
       <p class="hero-body reveal-fade delay-2">
@@ -93,16 +100,18 @@
       </div>
     </div>
 
-    <div class="hero-visual reveal-right">
-      <div class="hero-main-img">
-        <img src="/img/1.jpg" alt="Ana's Care Cleaning — spotless home" loading="eager" onerror="this.parentElement.classList.add('img-placeholder')" />
+    <div class="hero-visual">
+      <div class="hero-main-img reveal-mask">
+        <img src="/img/opt/1-960.webp" srcset="/img/opt/1-360.webp 360w, /img/opt/1-640.webp 640w, /img/opt/1-960.webp 960w, /img/opt/1-1400.webp 1400w" sizes="(max-width: 768px) 92vw, (max-width: 1100px) 460px, 46vw" width="960" height="1280" alt="Ana's Care Cleaning — spotless home" loading="eager" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/1.jpg'" />
+        <!-- Rendered with Remotion (motion/). Only loaded on larger screens, see script.js -->
+        <video class="hero-motion" muted loop playsinline preload="none" data-src="/img/hero/hero-loop.mp4" aria-hidden="true" tabindex="-1"></video>
         <div class="img-overlay"></div>
       </div>
       <div class="hero-img-sm top-right">
-        <img src="/img/6.jpeg" alt="Clean living space" loading="lazy" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
+        <img src="/img/opt/6-360.webp" srcset="/img/opt/6-360.webp 360w, /img/opt/6-576.webp 576w" sizes="140px" width="360" height="640" alt="Clean living space" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/6.jpeg'" />
       </div>
       <div class="hero-img-sm bottom-left">
-        <img src="/img/8.jpeg" alt="Detail cleaning" loading="lazy" onerror="this.parentElement.classList.add('img-placeholder-sm')" />
+        <img src="/img/opt/8-360.webp" srcset="/img/opt/8-360.webp 360w, /img/opt/8-640.webp 640w" sizes="120px" width="360" height="480" alt="Detail cleaning" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/8.jpeg'" />
       </div>
       <div class="hero-float-badge">
         <strong>Insured &amp; Trusted</strong>
@@ -121,14 +130,14 @@
       <span>✦ Residential Cleaning</span>
       <span>✦ Deep Cleaning</span>
       <span>✦ Move In / Move Out</span>
-      <span>✦ Kitchen & Bathrooms</span>
+      <span>✦ Kitchen &amp; Bathrooms</span>
       <span>✦ Eco-Friendly Products</span>
       <span>✦ Post-Construction</span>
       <span>✦ Regular Maintenance</span>
       <span>✦ Residential Cleaning</span>
       <span>✦ Deep Cleaning</span>
       <span>✦ Move In / Move Out</span>
-      <span>✦ Kitchen & Bathrooms</span>
+      <span>✦ Kitchen &amp; Bathrooms</span>
       <span>✦ Eco-Friendly Products</span>
       <span>✦ Post-Construction</span>
       <span>✦ Regular Maintenance</span>
@@ -202,26 +211,26 @@
       <h2>Every Room,<br><em>Transformed</em></h2>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item gi-large reveal-scale" data-lightbox="0">
-        <img src="/img/3.jpg" alt="Clean home after Ana's Care" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+      <div class="gallery-item gi-large reveal-scale" data-lightbox="0" data-full="/img/opt/3-1400.webp" role="button" tabindex="0" aria-label="View photo: Clean home after Ana's Care">
+        <img src="/img/opt/3-640.webp" srcset="/img/opt/3-360.webp 360w, /img/opt/3-640.webp 640w, /img/opt/3-960.webp 960w, /img/opt/3-1400.webp 1400w" sizes="(max-width: 1100px) 50vw, 33vw" width="960" height="1280" alt="Clean home after Ana's Care" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/3.jpg';this.parentElement.classList.add('gph')" />
         <div class="gallery-zoom" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
         </div>
       </div>
-      <div class="gallery-item reveal-scale" style="--d:.1s" data-lightbox="1">
-        <img src="/img/8.jpeg" alt="Sparkling kitchen" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+      <div class="gallery-item reveal-scale" style="--d:.1s" data-lightbox="1" data-full="/img/opt/8-1400.webp" role="button" tabindex="0" aria-label="View photo: Sparkling kitchen">
+        <img src="/img/opt/8-640.webp" srcset="/img/opt/8-360.webp 360w, /img/opt/8-640.webp 640w, /img/opt/8-960.webp 960w" sizes="(max-width: 1100px) 50vw, 33vw" width="960" height="1280" alt="Sparkling kitchen" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/8.jpeg';this.parentElement.classList.add('gph')" />
         <div class="gallery-zoom" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
         </div>
       </div>
-      <div class="gallery-item reveal-scale" style="--d:.2s" data-lightbox="2">
-        <img src="/img/5.jpeg" alt="Pristine bathroom" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+      <div class="gallery-item reveal-scale" style="--d:.2s" data-lightbox="2" data-full="/img/opt/5-576.webp" role="button" tabindex="0" aria-label="View photo: Pristine bathroom">
+        <img src="/img/opt/5-360.webp" srcset="/img/opt/5-360.webp 360w, /img/opt/5-576.webp 576w" sizes="(max-width: 1100px) 50vw, 33vw" width="576" height="1024" alt="Pristine bathroom" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/5.jpeg';this.parentElement.classList.add('gph')" />
         <div class="gallery-zoom" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
         </div>
       </div>
-      <div class="gallery-item gi-wide reveal-scale" style="--d:.3s" data-lightbox="3">
-        <img src="/img/7.jpeg" alt="Detailed cleaning result" loading="lazy" onerror="this.parentElement.classList.add('gph')" />
+      <div class="gallery-item gi-wide reveal-scale" style="--d:.3s" data-lightbox="3" data-full="/img/opt/7-1400.webp" role="button" tabindex="0" aria-label="View photo: Detailed cleaning result">
+        <img src="/img/opt/7-640.webp" srcset="/img/opt/7-360.webp 360w, /img/opt/7-640.webp 640w, /img/opt/7-960.webp 960w, /img/opt/7-1400.webp 1400w" sizes="(max-width: 1100px) 100vw, 66vw" width="960" height="1280" alt="Detailed cleaning result" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/7.jpeg';this.parentElement.classList.add('gph')" />
         <div class="gallery-zoom" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
         </div>
@@ -230,7 +239,7 @@
   </section>
 
   <!-- Photo Lightbox -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
     <button class="lb-close" id="lbClose" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -238,7 +247,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
     <div class="lb-stage">
-      <img id="lbImg" src="" alt="" />
+      <img id="lbImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" />
       <span class="lb-counter" id="lbCounter"></span>
     </div>
     <button class="lb-nav lb-next" id="lbNext" aria-label="Next photo">
@@ -247,7 +256,7 @@
   </div>
 
   <!-- Video Modal -->
-  <div class="video-modal" id="videoModal">
+  <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Video player">
     <div class="vm-backdrop" id="vmBackdrop"></div>
     <div class="vm-stage">
       <button class="vm-close" id="vmClose" aria-label="Close video">
@@ -255,7 +264,7 @@
       </button>
       <video id="vmVideo" controls playsinline></video>
       <div class="vm-badge">
-        <img src="/img/logo.jpeg" alt="" />
+        <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" />
         <span>Ana's Care Cleaning</span>
       </div>
     </div>
@@ -270,68 +279,68 @@
     </div>
 
     <div class="reel-grid">
-      <div class="reel-item reel-tall reveal-scale" style="--d:0s" data-video="/img/video1.mp4">
-        <div class="reel-thumb">
-          <div class="reel-play-icon" aria-label="Play video">
+      <div class="reel-item reel-tall reveal-scale" style="--d:0s" data-video="/img/video1.mp4" role="button" tabindex="0" aria-label="Play cleaning video 1 of 5">
+        <div class="reel-thumb" aria-hidden="true">
+          <div class="reel-play-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
-        <video class="reel-poster" src="/img/video1.mp4" muted playsinline preload="metadata"></video>
+        <img class="reel-poster" src="/img/opt/video1-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" />
         <div class="reel-overlay"></div>
         <div class="reel-badge">
-          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" loading="lazy" />
           <span>Ana's Care Cleaning</span>
         </div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.08s" data-video="/img/video2.mp4">
-        <div class="reel-thumb">
-          <div class="reel-play-icon" aria-label="Play video">
+      <div class="reel-item reveal-scale" style="--d:.08s" data-video="/img/video2.mp4" role="button" tabindex="0" aria-label="Play cleaning video 2 of 5">
+        <div class="reel-thumb" aria-hidden="true">
+          <div class="reel-play-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
-        <video class="reel-poster" src="/img/video2.mp4" muted playsinline preload="metadata"></video>
+        <img class="reel-poster" src="/img/opt/video2-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" />
         <div class="reel-overlay"></div>
         <div class="reel-badge">
-          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" loading="lazy" />
           <span>Ana's Care Cleaning</span>
         </div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.14s" data-video="/img/video3.mp4">
-        <div class="reel-thumb">
-          <div class="reel-play-icon" aria-label="Play video">
+      <div class="reel-item reveal-scale" style="--d:.14s" data-video="/img/video3.mp4" role="button" tabindex="0" aria-label="Play cleaning video 3 of 5">
+        <div class="reel-thumb" aria-hidden="true">
+          <div class="reel-play-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
-        <video class="reel-poster" src="/img/video3.mp4" muted playsinline preload="metadata"></video>
+        <img class="reel-poster" src="/img/opt/video3-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" />
         <div class="reel-overlay"></div>
         <div class="reel-badge">
-          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" loading="lazy" />
           <span>Ana's Care Cleaning</span>
         </div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.2s" data-video="/img/video4.mp4">
-        <div class="reel-thumb">
-          <div class="reel-play-icon" aria-label="Play video">
+      <div class="reel-item reveal-scale" style="--d:.2s" data-video="/img/video4.mp4" role="button" tabindex="0" aria-label="Play cleaning video 4 of 5">
+        <div class="reel-thumb" aria-hidden="true">
+          <div class="reel-play-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
-        <video class="reel-poster" src="/img/video4.mp4" muted playsinline preload="metadata"></video>
+        <img class="reel-poster" src="/img/opt/video4-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" />
         <div class="reel-overlay"></div>
         <div class="reel-badge">
-          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" loading="lazy" />
           <span>Ana's Care Cleaning</span>
         </div>
       </div>
-      <div class="reel-item reveal-scale" style="--d:.26s" data-video="/img/video5.mp4">
-        <div class="reel-thumb">
-          <div class="reel-play-icon" aria-label="Play video">
+      <div class="reel-item reveal-scale" style="--d:.26s" data-video="/img/video5.mp4" role="button" tabindex="0" aria-label="Play cleaning video 5 of 5">
+        <div class="reel-thumb" aria-hidden="true">
+          <div class="reel-play-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
-        <video class="reel-poster" src="/img/video5.mp4" muted playsinline preload="metadata"></video>
+        <img class="reel-poster" src="/img/opt/video5-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" />
         <div class="reel-overlay"></div>
         <div class="reel-badge">
-          <img src="/img/logo.jpeg" alt="" loading="lazy" />
+          <img src="/img/opt/logo-96.webp" alt="" width="22" height="22" loading="lazy" />
           <span>Ana's Care Cleaning</span>
         </div>
       </div>
@@ -418,11 +427,11 @@
       </div>
     </div>
     <div class="why-visual reveal-right">
-      <div class="why-img-main">
-        <img src="/img/7.jpeg" alt="Ana's Care team at work" loading="lazy" onerror="this.parentElement.classList.add('why-ph')" />
+      <div class="why-img-main reveal-mask">
+        <img src="/img/opt/7-640.webp" srcset="/img/opt/7-360.webp 360w, /img/opt/7-640.webp 640w, /img/opt/7-960.webp 960w, /img/opt/7-1400.webp 1400w" sizes="(max-width: 1100px) 92vw, 42vw" width="960" height="1280" alt="Ana's Care team at work" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/7.jpeg';" />
       </div>
       <div class="why-img-accent">
-        <img src="/img/8.jpeg" alt="Spotless result" loading="lazy" onerror="this.parentElement.classList.add('why-ph-sm')" />
+        <img src="/img/opt/8-360.webp" srcset="/img/opt/8-360.webp 360w, /img/opt/8-640.webp 640w" sizes="160px" width="360" height="480" alt="Spotless result" loading="lazy" decoding="async" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='/img/8.jpeg';" />
       </div>
       <div class="why-rating-badge">
         <div class="wrb-stars">★★★★★</div>
@@ -481,7 +490,7 @@
     <div class="areas-inner">
       <div class="areas-left reveal-left">
         <span class="label">Coverage</span>
-        <h2>Proudly Serving<br><em>Monmouth County</em><br>& Beyond</h2>
+        <h2>Proudly Serving<br><em>Monmouth County</em><br>&amp; Beyond</h2>
         <p>Ana's Care Cleaning operates throughout the Jersey Shore and Monmouth County region. If you don't see your town listed, reach out — we may still cover your area.</p>
         <a href="#contact" class="cta-primary" style="margin-top:8px;">
           Check Your Area
@@ -565,8 +574,7 @@
           action="https://formspree.io/f/mkoezqkp"
           method="POST"
           id="contactForm"
-          class="c-form"
-          novalidate>
+          class="c-form">
 
           <!-- Honeypot anti-bot field — hidden from real users -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
@@ -574,16 +582,16 @@
           <div class="cf-row">
             <div class="cf-group">
               <label for="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" placeholder="Ana" required />
+              <input type="text" id="firstName" name="firstName" placeholder="Ana" autocomplete="given-name" required />
             </div>
             <div class="cf-group">
               <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" placeholder="Cleaning" required />
+              <input type="text" id="lastName" name="lastName" placeholder="Cleaning" autocomplete="family-name" required />
             </div>
           </div>
           <div class="cf-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required />
+            <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" inputmode="tel" autocomplete="tel" required />
             <span class="cf-error" id="phoneError">Please enter a valid US phone number.</span>
           </div>
           <div class="cf-group">
@@ -641,7 +649,7 @@
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="/img/logo.jpeg" alt="Ana's Care Cleaning" loading="lazy" />
+        <img src="/img/opt/logo-96.webp" alt="Ana's Care Cleaning" width="46" height="46" loading="lazy" />
         <div>
           <strong>Ana's Care Cleaning</strong>
           <span>Serving New Jersey with care &amp; precision</span>
@@ -666,6 +674,22 @@
       <span class="footer-credit">Developed by <a href="https://www.instagram.com/vini_develops/" target="_blank" rel="noopener" class="credit-link">Vinícius Silva</a></span>
     </div>
   </footer>
+
+  <!-- Mobile quick actions: appear after the hero, hide again around the contact form -->
+  <div class="mobile-cta" id="mobileCta" role="region" aria-label="Quick contact">
+    <a href="tel:7176236050" class="mc-btn mc-call">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call
+    </a>
+    <a href="https://wa.me/17176236050" class="mc-btn mc-wa" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="#contact" class="mc-btn mc-quote">
+      Get a Quote
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 
   <script src="/script.js"></script>
 </body>

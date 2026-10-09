@@ -2,8 +2,6 @@
    ANA'S CARE CLEANING — STYLESHEET v3 (optimized)
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Outfit:wght@300;400;500;600&display=swap');
-
 *,
 *::before,
 *::after {
@@ -1768,22 +1766,21 @@ section {
   background: linear-gradient(135deg, var(--ink-mid), #2a4a60);
 }
 
-/* Real frame pulled from the video itself — the actual thumbnail */
+/* Real frame from each clip (pre-extracted poster, so no video is downloaded until tapped) */
 .reel-poster {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity .5s var(--ease);
+  transition: transform .8s var(--ease);
 }
 
-.reel-item.poster-ready .reel-poster {
-  opacity: 1;
+.reel-item:hover .reel-poster {
+  transform: scale(1.04);
 }
 
-/* Play-icon layer — sits above the poster video at all times */
+/* Play-icon layer — sits above the poster at all times */
 .reel-thumb {
   position: relative;
   z-index: 4;
@@ -2244,61 +2241,6 @@ footer {
   color: var(--gold-l);
 }
 
-/* ---- REVEAL ANIMATIONS ---- */
-.reveal-fade,
-.reveal-up,
-.reveal-left,
-.reveal-right,
-.reveal-scale {
-  opacity: 0;
-  transition: opacity .8s var(--ease), transform .8s var(--ease);
-}
-
-.reveal-fade {
-  transform: none;
-}
-
-.reveal-up {
-  transform: translateY(36px);
-}
-
-.reveal-left {
-  transform: translateX(-36px);
-}
-
-.reveal-right {
-  transform: translateX(36px);
-}
-
-.reveal-scale {
-  transform: scale(.93);
-}
-
-[style*="--d"] {
-  transition-delay: var(--d, 0s) !important;
-}
-
-.reveal-fade.visible,
-.reveal-up.visible,
-.reveal-left.visible,
-.reveal-right.visible,
-.reveal-scale.visible {
-  opacity: 1;
-  transform: none;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* ---- RESPONSIVE ---- */
 @media (max-width:1100px) {
   .hero {
@@ -2405,5 +2347,1448 @@ footer {
 
   .hero-stats {
     gap: 16px;
+  }
+}
+/* =====================================================================
+   MOTION SYSTEM
+   One set of curves/timings for the whole site. --ease-mask is the same
+   curve used for the mask wipes in the Remotion hero loop (motion/).
+   Reveals are only "armed" when html.js is present (set inline in <head>
+   and removed again if script.js fails to load), so content can never be
+   left hidden.
+   ===================================================================== */
+:root {
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-mask: cubic-bezier(.76, 0, .24, 1);
+  --dur: .8s;
+  --rise: 26px;
+  --stagger: 1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(var(--rise)); }
+}
+
+@keyframes slide-from-left {
+  from { opacity: 0; transform: translateX(-28px); }
+}
+
+@keyframes slide-from-right {
+  from { opacity: 0; transform: translateX(28px); }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(14px) scale(.96); }
+}
+
+@keyframes wipe-up {
+  from { clip-path: inset(100% 0 0 0 round var(--mask-r, 0px)); }
+  to { clip-path: inset(0 0 0 0 round var(--mask-r, 0px)); }
+}
+
+@keyframes settle {
+  from { scale: 1.16; }
+}
+
+@keyframes draw {
+  from { transform: scaleX(0); }
+}
+
+@keyframes drift {
+  from { translate: 0 -4%; }
+  to { translate: 0 4%; }
+}
+
+/* ---- hidden (pre-reveal) states: JS only ---- */
+.js .reveal-fade:not(.visible),
+.js .reveal-up:not(.visible),
+.js .reveal-left:not(.visible),
+.js .reveal-right:not(.visible),
+.js .reveal-scale:not(.visible) {
+  opacity: 0;
+}
+
+.js .reveal-mask:not(.visible)>img,
+.js .reveal-mask:not(.visible)>.img-overlay {
+  visibility: hidden;
+}
+
+/* ---- reveal animations (play once; no fill-forwards so hover states keep working) ---- */
+.reveal-up.visible,
+.reveal-fade.visible {
+  animation: rise var(--dur) var(--ease-out) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+.reveal-left.visible {
+  animation: slide-from-left var(--dur) var(--ease-out) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+.reveal-right.visible {
+  animation: slide-from-right var(--dur) var(--ease-out) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+.reveal-scale.visible {
+  animation: pop var(--dur) var(--ease-out) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+/* Photos: wipe up from the bottom edge + slow settle (same direction as the hero loop) */
+.gallery-item.reveal-scale {
+  --mask-r: 18px;
+}
+
+.gallery-item.reveal-scale.visible {
+  animation: wipe-up 1.1s var(--ease-mask) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+.gallery-item.reveal-scale.visible>img {
+  animation: settle 1.5s var(--ease-out) calc(var(--d, 0s) * var(--stagger)) backwards;
+}
+
+.reveal-mask.visible>.img-overlay {
+  animation: wipe-up 1.15s var(--ease-mask) .1s backwards;
+}
+
+.reveal-mask.visible>img {
+  animation: wipe-up 1.15s var(--ease-mask) .1s backwards, settle 1.6s var(--ease-out) .1s backwards;
+}
+
+/* Section labels draw their rule in */
+.section-intro.visible .label::before,
+.areas-left.visible .label::before {
+  transform-origin: left;
+  animation: draw .8s var(--ease-out) .2s backwards;
+}
+
+/* staggers for the hero copy (heading lines have their own timing below) */
+.delay-1 { --d: .08s; }
+.delay-2 { --d: .26s; }
+.delay-3 { --d: .38s; }
+.delay-4 { --d: .5s; }
+
+/* ---- hero heading: lines rise out of a mask ---- */
+.hero-heading .line {
+  display: block;
+  overflow: hidden;
+  padding: .06em .1em .14em 0;
+  margin: -.06em -.1em -.14em 0;
+}
+
+.hero-heading .line-in {
+  display: inline-block;
+}
+
+.js .hero-heading .line-in {
+  transition: transform 1s var(--ease-out);
+  transition-delay: calc(.08s + var(--i, 0) * .09s);
+}
+
+.js:not(.is-loaded) .hero-heading .line-in {
+  transform: translateY(112%);
+}
+
+/* ---- hero visual ---- */
+.hero-main-img>img {
+  object-position: 50% 45%;
+}
+
+.hero-motion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .9s var(--ease-out);
+  pointer-events: none;
+}
+
+.hero-motion.is-live {
+  opacity: 1;
+}
+
+.img-overlay {
+  z-index: 1;
+}
+
+/* secondary hero images + badge arrive after the main photo */
+.js .hero-main-img:not(.visible)~.hero-img-sm,
+.js .hero-main-img:not(.visible)~.hero-float-badge {
+  opacity: 0;
+}
+
+.hero-main-img.visible~.hero-img-sm {
+  animation: pop .9s var(--ease-out) .75s backwards;
+}
+
+.hero-main-img.visible~.hero-img-sm.bottom-left {
+  animation-delay: .9s;
+}
+
+.hero-main-img.visible~.hero-float-badge {
+  animation: pop .9s var(--ease-out) 1.05s backwards;
+}
+
+/* No constantly-moving decoration */
+.hero-float-badge,
+.why-rating-badge {
+  animation: none;
+}
+
+/* ---- keyboard focus ---- */
+:focus-visible {
+  outline: 2px solid var(--sky-d);
+  outline-offset: 3px;
+}
+
+.gallery-item:focus-visible,
+.reel-item:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---- mobile menu: staggered links, no focusable links while closed ---- */
+.mobile-nav {
+  visibility: hidden;
+  overflow-y: auto;
+  transition: opacity .4s var(--ease-out), visibility 0s .4s;
+}
+
+.mobile-nav.open {
+  visibility: visible;
+  transition: opacity .4s var(--ease-out), visibility 0s;
+}
+
+.mobile-nav a {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out), color .3s;
+}
+
+.mobile-nav.open a {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(.06s + var(--n, 0) * .045s);
+}
+
+.mobile-nav .mobile-nav-phone {
+  font-family: var(--ff-body);
+  font-size: .95rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--sky-d);
+  padding: 14px 26px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  margin-top: 6px;
+}
+
+.hamburger {
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-right: -10px;
+}
+
+.hamburger span {
+  transition: transform .35s var(--ease-out), opacity .2s;
+}
+
+/* ---- mobile quick actions ---- */
+.mobile-cta {
+  display: none;
+}
+
+/* =====================================================================
+   TOUCH + HOVER
+   ===================================================================== */
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* no "stuck" hover states after a tap */
+  .svc-card:hover,
+  .testi-card:hover,
+  .why-item:hover,
+  .cl-item:not(.no-link):hover,
+  .areas-grid span:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+  }
+
+  .svc-card:hover::before {
+    transform: scaleX(0);
+  }
+
+  .gallery-item:hover img {
+    transform: none;
+  }
+
+  .gallery-item:hover::after,
+  .gallery-zoom {
+    opacity: 0;
+  }
+
+  /* tap feedback */
+  .cta-primary,
+  .cta-whatsapp,
+  .cf-submit,
+  .nav-cta,
+  .mc-btn,
+  .reel-ig-btn,
+  .svc-card,
+  .cl-item,
+  .why-item,
+  .gallery-item,
+  .reel-item {
+    transition: transform .18s var(--ease-out), box-shadow .3s, background .3s;
+  }
+
+  .cta-primary:active,
+  .cta-whatsapp:active,
+  .cf-submit:active,
+  .nav-cta:active,
+  .mc-btn:active,
+  .reel-ig-btn:active {
+    transform: scale(.97);
+  }
+
+  .svc-card:active,
+  .cl-item:active,
+  .gallery-item:active,
+  .reel-item:active {
+    transform: scale(.985);
+  }
+}
+
+/* One restrained parallax: the "Why Ana's Care" photo (desktop, where supported) */
+@supports (animation-timeline: view()) {
+  @media (min-width: 769px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .why-img-main.reveal-mask.visible>img {
+      scale: 1.1;
+      animation: wipe-up 1.15s var(--ease-mask) .1s backwards, settle 1.6s var(--ease-out) .1s backwards, drift linear both;
+      animation-timeline: auto, auto, view();
+      animation-range: normal, normal, cover 0% cover 100%;
+    }
+  }
+}
+
+/* =====================================================================
+   TABLET
+   ===================================================================== */
+@media (max-width: 1100px) {
+  .hero {
+    min-height: 0;
+    padding: 112px 5vw 72px;
+    gap: 48px;
+  }
+
+  /* text first, photo second (the old layout pushed the headline below the fold) */
+  .hero-visual {
+    order: 0;
+  }
+
+  .reveal-left.visible,
+  .reveal-right.visible {
+    animation-name: rise;
+  }
+}
+
+/* =====================================================================
+   MOBILE (mobile-first decisions, not a shrunken desktop)
+   ===================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --rise: 18px;
+    --dur: .7s;
+  }
+
+  section,
+  .gallery,
+  .reel,
+  .areas {
+    padding: 64px 20px;
+  }
+
+  .payment {
+    padding: 56px 20px;
+  }
+
+  .section-intro {
+    margin-bottom: 32px;
+  }
+
+  .section-intro h2 {
+    font-size: clamp(1.9rem, 8.4vw, 2.5rem);
+  }
+
+  .why-text h2,
+  .areas-left h2,
+  .contact-left h2 {
+    font-size: clamp(2rem, 8.6vw, 2.6rem);
+  }
+
+  nav {
+    padding: 0 20px;
+    height: 64px;
+  }
+
+  nav.scrolled {
+    height: 58px;
+  }
+
+  .nav-logo img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobile-nav {
+    gap: 18px;
+    padding: 84px 20px 40px;
+    justify-content: flex-start;
+  }
+
+  .mobile-nav a {
+    font-size: clamp(1.9rem, 9vw, 2.4rem);
+    line-height: 1.15;
+    padding: 4px 12px;
+  }
+
+  .mobile-nav .mobile-nav-phone {
+    font-size: .95rem;
+    margin-top: auto;
+  }
+
+  /* ---- hero ---- */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    padding: 92px 20px 48px;
+    gap: 36px;
+    align-items: stretch;
+  }
+
+  .hero-content {
+    gap: 22px;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.7rem, 13.2vw, 3.6rem);
+  }
+
+  .hero-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cta-primary,
+  .cta-whatsapp {
+    justify-content: center;
+    min-height: 54px;
+    padding: 16px 24px;
+  }
+
+  .hero-stats {
+    padding-top: 4px;
+  }
+
+  .hero-visual {
+    max-width: none;
+    margin: 0;
+  }
+
+  .hero-main-img {
+    aspect-ratio: 1 / 1.08;
+    border-radius: 22px;
+  }
+
+  .hero-img-sm {
+    display: none;
+  }
+
+  .hero-float-badge {
+    right: 12px;
+    bottom: 12px;
+    padding: 11px 15px;
+    border-radius: 14px;
+  }
+
+  .scroll-cue {
+    display: none;
+  }
+
+  .marquee-bar {
+    padding: 14px 0;
+  }
+
+  /* ---- services ---- */
+  .services-grid {
+    gap: 14px;
+    --stagger: 0;
+  }
+
+  .svc-card {
+    padding: 26px 22px 24px;
+  }
+
+  .svc-num {
+    margin-bottom: 12px;
+  }
+
+  .svc-icon {
+    margin-bottom: 10px;
+  }
+
+  .svc-link {
+    margin-top: 10px;
+    padding: 12px 0;
+    min-height: 44px;
+  }
+
+  .first-clean-notice {
+    padding: 16px 18px;
+  }
+
+  /* ---- gallery: 2-up mosaic instead of four tall full-width photos ---- */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 44vw;
+    gap: 10px;
+    margin-top: 0;
+    --stagger: .5;
+  }
+
+  .gi-large {
+    grid-row: span 2;
+  }
+
+  .gi-wide {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+
+  /* ---- reel: swipeable strip of vertical clips ---- */
+  .reel-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    margin: 0 -20px;
+    padding: 4px 20px 18px;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .reel-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reel-item,
+  .reel-item:first-child {
+    flex: 0 0 64%;
+    max-width: 260px;
+    aspect-ratio: 9 / 16;
+    grid-row: auto;
+    scroll-snap-align: start;
+  }
+
+  .js .reel-item.reveal-scale:not(.visible) {
+    opacity: 1;
+  }
+
+  .reel-item.reveal-scale.visible {
+    animation: none;
+  }
+
+  .reel-cta {
+    margin-top: 12px;
+  }
+
+  /* ---- process: compact horizontal steps ---- */
+  .process-grid {
+    margin-top: 28px;
+    gap: 26px;
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    column-gap: 18px;
+    row-gap: 4px;
+    text-align: left;
+    padding: 0;
+    align-items: start;
+  }
+
+  .ps-num {
+    grid-row: span 2;
+    width: 56px;
+    height: 56px;
+    margin: 0;
+    font-size: 1.4rem;
+  }
+
+  .process-step h3 {
+    align-self: end;
+    margin: 0;
+  }
+
+  /* ---- why ---- */
+  .why {
+    gap: 56px;
+  }
+
+  .why-img-accent {
+    width: 104px;
+    left: -8px;
+    bottom: -18px;
+  }
+
+  .why-rating-badge {
+    width: 80px;
+    height: 80px;
+    top: -12px;
+    right: -6px;
+  }
+
+  /* ---- testimonials: swipeable ---- */
+  .testi-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    margin: 0 -20px;
+    padding: 4px 20px 16px;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .testi-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testi-card {
+    flex: 0 0 84%;
+    scroll-snap-align: start;
+    padding: 26px 22px;
+  }
+
+  .js .testi-card.reveal-up:not(.visible) {
+    opacity: 1;
+  }
+
+  .testi-card.reveal-up.visible {
+    animation: none;
+  }
+
+  /* ---- areas / contact ---- */
+  .areas-inner {
+    gap: 32px;
+  }
+
+  .areas-grid span {
+    padding: 10px 16px;
+  }
+
+  .contact-inner {
+    gap: 40px;
+  }
+
+  .contact-left>p {
+    margin-bottom: 28px;
+  }
+
+  .cf-group input,
+  .cf-group select,
+  .cf-group textarea {
+    font-size: 16px;
+    /* avoids iOS zoom-on-focus */
+    min-height: 50px;
+  }
+
+  .cf-submit {
+    align-self: stretch;
+    justify-content: center;
+    min-height: 54px;
+  }
+
+  .payment-card {
+    min-width: 0;
+    flex: 1 1 140px;
+  }
+
+  /* ---- footer ---- */
+  footer {
+    padding: 48px 20px calc(36px + 84px + env(safe-area-inset-bottom));
+  }
+
+  .footer-nav a,
+  .footer-contact a {
+    padding: 7px 0;
+  }
+
+  /* ---- modals ---- */
+  .lb-stage img {
+    border-radius: 8px;
+  }
+
+  /* ---- quick-action bar ---- */
+  .mobile-cta {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 900;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(14, 31, 45, .96);
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(14, 31, 45, .32);
+    transform: translateY(150%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .55s var(--ease-out), opacity .3s;
+  }
+
+  .mobile-cta.is-visible {
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mc-btn {
+    flex: 1 1 0;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-radius: 12px;
+    color: #fff;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .03em;
+    background: rgba(255, 255, 255, .1);
+  }
+
+  .mc-wa {
+    background: #1f9d55;
+  }
+
+  .mc-quote {
+    flex: 1.35 1 0;
+    background: var(--sky-d);
+    color: var(--ink);
+  }
+}
+
+/* very small phones */
+@media (max-width: 360px) {
+  .hero-stats {
+    gap: 12px;
+  }
+
+  .stat-n {
+    font-size: 1.7rem;
+  }
+
+  .stat-l {
+    font-size: .62rem;
+  }
+
+  .mc-btn {
+    font-size: .74rem;
+    gap: 5px;
+  }
+}
+
+@media (max-height: 640px) and (max-width: 768px) {
+  .mobile-nav {
+    gap: 8px;
+  }
+
+  .mobile-nav a {
+    font-size: 1.7rem;
+  }
+}
+
+/* =====================================================================
+   REDUCED MOTION: everything is simply there, nothing moves
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .js .reveal-fade:not(.visible),
+  .js .reveal-up:not(.visible),
+  .js .reveal-left:not(.visible),
+  .js .reveal-right:not(.visible),
+  .js .reveal-scale:not(.visible) {
+    opacity: 1;
+  }
+
+  .js .reveal-mask:not(.visible)>img,
+  .js .reveal-mask:not(.visible)>.img-overlay {
+    visibility: visible;
+  }
+
+  .js:not(.is-loaded) .hero-heading .line-in {
+    transform: none;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .hero-motion {
+    display: none;
+  }
+}
+
+/* photo viewer: soft cross-fade while the next image loads */
+.lightbox.open .lb-stage img.swap {
+  opacity: 0;
+  transform: scale(.985);
+}
+
+/* =====================================================================
+   MOBILE POLISH (overflow guards, touch-target sizes, legible small text)
+   ===================================================================== */
+@media (max-width: 1100px) {
+
+  /* min-content of long children (e.g. the email address) must not widen the column */
+  .contact-inner,
+  .areas-inner,
+  .why {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.cl-item>div {
+  min-width: 0;
+}
+
+.cl-item span {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .nav-logo {
+    min-height: 44px;
+  }
+
+  .reel-ig-btn {
+    min-height: 44px;
+  }
+
+  .footer-nav a,
+  .footer-contact a,
+  .credit-link,
+  .form-alt a {
+    display: inline-block;
+    padding: 11px 0;
+  }
+
+  .footer-bottom {
+    gap: 2px;
+  }
+
+  .stat-l,
+  .label,
+  .cf-group label {
+    font-size: .75rem;
+  }
+
+  .cl-item strong {
+    font-size: .76rem;
+  }
+}
+
+/* =====================================================================
+   SERVICES: compact editorial list (replaces the large 3-column cards)
+   Intro sits on the left, services are thin-ruled rows on the right.
+   ===================================================================== */
+.services {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.5fr);
+  column-gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+  padding-block: 88px;
+}
+
+.services .section-intro {
+  position: sticky;
+  top: 104px;
+  margin-bottom: 0;
+}
+
+.services .section-intro h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.services .section-intro p {
+  max-width: 380px;
+}
+
+.services .first-clean-notice {
+  margin-top: 24px;
+  padding: 16px 18px;
+}
+
+.services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.svc-card {
+  display: grid;
+  grid-template-columns: 30px 44px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "num icon title link"
+    "num icon desc link";
+  column-gap: 18px;
+  row-gap: 3px;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: 22px 14px;
+  transition: background .35s var(--ease), padding .35s var(--ease);
+}
+
+.svc-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+  background: rgba(79, 168, 208, .06);
+}
+
+.svc-num {
+  grid-area: num;
+  margin: 0;
+  align-self: center;
+}
+
+.svc-icon {
+  grid-area: icon;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  background: var(--sky-l);
+  border-radius: 12px;
+}
+
+.svc-card h3 {
+  grid-area: title;
+  align-self: end;
+  margin: 0;
+  font-size: 1.35rem;
+  transition: color .3s;
+}
+
+.svc-card:hover h3 {
+  color: var(--sky-d);
+}
+
+.svc-card p {
+  grid-area: desc;
+  align-self: start;
+  max-width: 540px;
+  font-size: .86rem;
+  line-height: 1.6;
+}
+
+.svc-link {
+  grid-area: link;
+  margin: 0;
+  padding: 8px 0;
+  white-space: nowrap;
+  transition: color .3s, transform .35s var(--ease);
+}
+
+.svc-card:hover .svc-link {
+  transform: translateX(4px);
+}
+
+/* the whole row is the tap/click target for its quote link */
+.svc-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* highlighted last row: first visit is always a deep clean */
+.svc-card-note {
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "icon title link"
+    "icon desc link";
+  margin-top: 20px;
+  padding: 22px 24px;
+  border-top: 0;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+}
+
+.svc-card-note:hover {
+  background: var(--ink-mid);
+}
+
+.svc-card-note:hover h3 {
+  color: #fff;
+}
+
+.svc-note-icon {
+  grid-area: icon;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .services {
+    display: block;
+    padding-block: 64px;
+  }
+
+  .services .section-intro {
+    position: static;
+    margin-bottom: 28px;
+  }
+
+  .services .section-intro p {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 768px) {
+  .services {
+    padding: 52px 20px;
+  }
+
+  .services .section-intro {
+    margin-bottom: 22px;
+  }
+
+  .services .first-clean-notice {
+    margin-top: 18px;
+    padding: 13px 15px;
+    gap: 10px;
+  }
+
+  .services .fcn-icon {
+    display: none;
+  }
+
+  .services .first-clean-notice strong {
+    font-size: .86rem;
+  }
+
+  .services .first-clean-notice div {
+    font-size: .8rem;
+    line-height: 1.55;
+  }
+
+  /* icon + title on one line, description and link run full width underneath */
+  .svc-card,
+  .svc-card-note {
+    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-areas:
+      "icon title"
+      "desc desc"
+      "link link";
+    column-gap: 14px;
+    row-gap: 8px;
+    align-items: center;
+    padding: 16px 2px 14px;
+  }
+
+  .svc-card-note {
+    padding: 16px 16px;
+    margin-top: 14px;
+  }
+
+  .svc-num {
+    display: none;
+  }
+
+  .svc-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+
+  .svc-card h3 {
+    font-size: 1.22rem;
+    align-self: center;
+  }
+
+  .svc-card p {
+    font-size: .85rem;
+    line-height: 1.55;
+  }
+
+  .svc-link {
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    font-size: .8rem;
+  }
+}
+
+/* =====================================================================
+   SERVICES: readability pass
+   Larger, darker body text, comfortable line length, real inner padding.
+   ===================================================================== */
+.services {
+  --svc-text: #46596a;
+}
+
+.services .section-intro p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--svc-text);
+}
+
+.services .first-clean-notice div {
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--svc-text);
+}
+
+.services .first-clean-notice strong {
+  font-size: .95rem;
+  margin-bottom: 6px;
+}
+
+.services .svc-card {
+  column-gap: 24px;
+  row-gap: 6px;
+  padding: 28px 24px;
+}
+
+.services .svc-card h3 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.services .svc-card p {
+  max-width: 56ch;
+  font-size: .96rem;
+  line-height: 1.7;
+  color: var(--svc-text);
+}
+
+.services .svc-link {
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.services .svc-card-note {
+  padding: 26px 28px;
+}
+
+.services .svc-card-note p {
+  color: rgba(255, 255, 255, .78);
+}
+
+@media (max-width: 768px) {
+  .services-grid {
+    gap: 12px;
+    border-bottom: 0;
+  }
+
+  /* each service becomes a soft card so text sits inside its own padded box,
+     instead of running to the edges of the screen */
+  .services .svc-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 18px 18px;
+    row-gap: 10px;
+    column-gap: 14px;
+  }
+
+  .services .svc-card:hover {
+    background: var(--cream);
+  }
+
+  .services .svc-card-note {
+    background: var(--ink);
+    border-color: transparent;
+    padding: 20px 18px;
+    margin-top: 4px;
+  }
+
+  .services .svc-card h3 {
+    font-size: 1.32rem;
+  }
+
+  .services .svc-card p {
+    font-size: .95rem;
+    line-height: 1.65;
+    max-width: none;
+  }
+
+  .services .svc-link {
+    font-size: .88rem;
+    padding-top: 2px;
+  }
+
+  .services .first-clean-notice {
+    padding: 15px 16px;
+  }
+
+  .services .first-clean-notice div {
+    font-size: .88rem;
+    line-height: 1.65;
+  }
+}
+
+/* =====================================================================
+   HERO v2: dark, immersive first screen
+   Deep navy (same --ink as the Gallery/Process/Footer), oversized white
+   headline, and a tall photo panel that bleeds off the right edge.
+   ===================================================================== */
+.hero {
+  background: var(--ink);
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 55% 70% at 82% 40%, rgba(79, 168, 208, .24) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 55% at 8% 95%, rgba(198, 152, 74, .14) 0%, transparent 70%),
+    var(--ink);
+}
+
+.hero-eyebrow {
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .16);
+  color: var(--sky);
+  backdrop-filter: none;
+}
+
+.dot-pulse {
+  background: var(--gold);
+}
+
+.hero-heading {
+  color: #fff;
+  font-size: clamp(3.3rem, 6.3vw, 6.1rem);
+  line-height: 1.02;
+}
+
+.hero-heading em {
+  color: var(--sky);
+}
+
+.hero-body {
+  color: rgba(255, 255, 255, .72);
+  font-size: 1.08rem;
+  max-width: 460px;
+}
+
+.hero .cta-primary {
+  background: #fff;
+  color: var(--ink);
+}
+
+.hero .cta-primary::before {
+  background: var(--sky);
+}
+
+.hero .cta-primary:hover {
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
+}
+
+.hero-stats {
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  max-width: 460px;
+}
+
+.hero .stat-n {
+  color: #fff;
+}
+
+.hero .stat-n::first-letter {
+  color: #fff;
+}
+
+.hero .stat-l {
+  color: rgba(255, 255, 255, .56);
+}
+
+.hero .stat-divider {
+  background: rgba(255, 255, 255, .14);
+}
+
+/* tall photo panel bleeding off the right edge */
+.hero-visual {
+  margin-right: -5vw;
+}
+
+.hero-main-img {
+  aspect-ratio: auto;
+  height: min(76vh, 720px);
+  min-height: 460px;
+  border-radius: 36px 0 0 36px;
+  background: var(--ink-mid);
+  box-shadow: none;
+}
+
+.hero-img-sm.top-right {
+  display: none;
+}
+
+.hero-img-sm.bottom-left {
+  width: 132px;
+  left: -36px;
+  bottom: 40px;
+  border: 4px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .4);
+}
+
+.hero-float-badge {
+  right: 28px;
+  bottom: 28px;
+  background: rgba(14, 31, 45, .82);
+  border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+}
+
+.hero-float-badge span {
+  color: var(--gold-l);
+  opacity: .9;
+}
+
+.scroll-cue {
+  display: none;
+}
+
+/* ticker keeps its own hairline now that it sits right under a dark hero */
+.marquee-bar {
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+/* ---- nav on top of the dark hero (switches back to the cream bar on scroll) ---- */
+nav .nav-logo img {
+  border-radius: 10px;
+}
+
+nav:not(.scrolled) .nav-logo span {
+  color: #fff;
+}
+
+nav:not(.scrolled) .nav-links a {
+  color: rgba(255, 255, 255, .74);
+}
+
+nav:not(.scrolled) .nav-links a:hover,
+nav:not(.scrolled) .nav-links a.active {
+  color: #fff;
+}
+
+nav:not(.scrolled) .nav-links a::after {
+  background: var(--gold);
+}
+
+nav:not(.scrolled) .nav-cta {
+  background: #fff;
+  color: var(--ink) !important;
+}
+
+nav:not(.scrolled) .nav-cta:hover {
+  background: var(--sky) !important;
+}
+
+nav:not(.scrolled) .hamburger span {
+  background: #fff;
+}
+
+/* the cream full-screen menu needs dark logo text + bars while it is open */
+body.menu-open nav .nav-logo span {
+  color: var(--ink);
+}
+
+body.menu-open nav .hamburger span {
+  background: var(--ink);
+}
+
+@media (max-width: 1100px) {
+  .hero-visual {
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .hero-main-img {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: 28px;
+  }
+
+  .hero-img-sm.bottom-left {
+    left: -20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 96px;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.9rem, 14vw, 3.9rem);
+  }
+
+  .hero-body {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, .74);
+  }
+
+  .hero-stats {
+    max-width: none;
+  }
+
+  .hero-main-img {
+    aspect-ratio: 1 / 1.08;
+    border-radius: 24px;
   }
 }

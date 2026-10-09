@@ -4,3 +4,8 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Remotion subproject (source of the hero motion asset)
+motion/node_modules
+motion/out
+motion/build
