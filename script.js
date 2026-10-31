@@ -23,13 +23,20 @@ const mobileNav = document.querySelector('.mobile-nav');
 
 mobileNav?.querySelectorAll('a').forEach((a, i) => a.style.setProperty('--n', i));
 
+// everything behind the full-screen menu is unreachable (and un-tabbable) while it is open
+const behindMenu = ['main', 'mobileCta'].map(id => document.getElementById(id)).concat(document.querySelector('footer'));
+
 function setMenu(open) {
+  const wasOpen = mobileNav.classList.contains('open');
   hamburger.classList.toggle('open', open);
   mobileNav.classList.toggle('open', open);
   hamburger.setAttribute('aria-expanded', String(open));
   hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
   document.body.style.overflow = open ? 'hidden' : '';
   document.body.classList.toggle('menu-open', open);
+  behindMenu.forEach(el => { if (el) el.inert = open; });
+  if (open) mobileNav.querySelector('a')?.focus({ preventScroll: true });
+  else if (wasOpen) hamburger.focus({ preventScroll: true });
 }
 
 hamburger?.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
@@ -47,7 +54,7 @@ window.matchMedia('(min-width: 769px)').addEventListener('change', e => {
 });
 
 /* ---- SCROLL REVEAL ---- */
-const revealTargets = document.querySelectorAll('.reveal-fade, .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-mask');
+const revealTargets = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-mask');
 
 if ('IntersectionObserver' in window) {
   const revealObserver = new IntersectionObserver((entries, obs) => {
@@ -62,13 +69,6 @@ if ('IntersectionObserver' in window) {
 } else {
   revealTargets.forEach(el => el.classList.add('visible'));
 }
-
-/* ---- HERO LOAD ANIMATIONS ---- */
-// Two frames so the hidden starting state is painted once before the lines rise.
-requestAnimationFrame(() => requestAnimationFrame(() => {
-  document.documentElement.classList.add('is-loaded');
-  document.querySelectorAll('.hero .reveal-fade').forEach(el => el.classList.add('visible'));
-}));
 
 /* ---- HERO MOTION LOOP (rendered with Remotion, see /motion) ---- */
 // Larger screens only, and never for reduced motion / data saver / slow connections.
@@ -102,16 +102,15 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 })();
 
 /* ---- COUNTER ANIMATION ---- */
+// The final numbers are in the HTML; with motion allowed they count up from 0 when scrolled into view.
+const counters = document.querySelectorAll('.stat-n[data-target]');
+
 const counterObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting && !e.target.dataset.counted) {
       e.target.dataset.counted = '1';
       const target = parseInt(e.target.dataset.target);
       const suffix = e.target.dataset.suffix || '';
-      if (reduceMotion.matches) {
-        e.target.textContent = target + suffix;
-        return;
-      }
       let start = null;
       const step = ts => {
         if (!start) start = ts;
@@ -125,7 +124,12 @@ const counterObs = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.5 });
 
-document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.observe(el));
+if (!reduceMotion.matches) {
+  counters.forEach(el => {
+    el.textContent = '0' + (el.dataset.suffix || '');
+    counterObs.observe(el);
+  });
+}
 
 /* ---- SMOOTH ANCHOR SCROLL ---- */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -204,18 +208,51 @@ phoneInput?.addEventListener('blur', () => {
   phoneError.style.display = valid ? 'none' : 'block';
 });
 
-/* ---- FORM: phone validation only, Formspree handles submission ---- */
-document.getElementById('contactForm')?.addEventListener('submit', e => {
+/* ---- CONTACT FORM ---- */
+// Without JS this is a plain Formspree POST. With JS the same data is sent in the background so the
+// visitor stays on the page and sees a thank-you; if anything fails we fall back to the normal
+// submit, so a lead is never lost.
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+function setStatus(kind, text) {
+  formStatus.className = kind ? `cf-status is-${kind}` : 'cf-status';
+  formStatus.textContent = text;
+}
+
+contactForm?.addEventListener('submit', async e => {
+  e.preventDefault();
+
   if (phoneInput && !isValidPhone(phoneInput.value)) {
-    e.preventDefault();
     phoneInput.classList.add('invalid');
     phoneError.style.display = 'block';
     phoneInput.focus();
+    return;
   }
-  // honeypot check — if the hidden field has a value, silently block
-  const honey = document.querySelector('input[name="_gotcha"]');
-  if (honey && honey.value !== '') {
-    e.preventDefault();
+
+  // spam trap: real visitors never see this field, bots fill it. Drop silently.
+  if (contactForm.querySelector('input[name="_gotcha"]')?.value) return;
+
+  const button = contactForm.querySelector('.cf-submit');
+  const label = button.querySelector('span');
+  button.disabled = true;
+  label.textContent = 'Sending…';
+  setStatus('', '');
+
+  try {
+    const res = await fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { Accept: 'application/json' }
+    });
+    if (!res.ok) throw new Error(`Formspree responded ${res.status}`);
+    contactForm.reset();
+    setStatus('success', 'Thank you! Your request was sent. Ana will be in touch personally within a few hours.');
+  } catch (err) {
+    contactForm.submit(); // regular browser POST (does not re-trigger this handler)
+  } finally {
+    button.disabled = false;
+    label.textContent = 'Send Request';
   }
 });
 
@@ -271,8 +308,9 @@ function onActivate(el, handler) {
   const vmBackdrop = document.getElementById('vmBackdrop');
   const dialog = makeDialog(modal, vmClose);
 
-  function openVideo(src) {
-    vmVideo.src = src;
+  function openVideo(item) {
+    vmVideo.poster = item.querySelector('.reel-poster')?.currentSrc || '';
+    vmVideo.src = item.dataset.video;
     dialog.open();
     vmVideo.muted = false;
     vmVideo.play().catch(() => {});
@@ -281,11 +319,12 @@ function onActivate(el, handler) {
   function closeVideo() {
     vmVideo.pause();
     vmVideo.removeAttribute('src');
+    vmVideo.removeAttribute('poster');
     vmVideo.load();
     dialog.close();
   }
 
-  items.forEach(item => onActivate(item, () => openVideo(item.dataset.video)));
+  items.forEach(item => onActivate(item, () => openVideo(item)));
 
   vmClose.addEventListener('click', closeVideo);
   vmBackdrop.addEventListener('click', closeVideo);
@@ -305,7 +344,7 @@ function onActivate(el, handler) {
   // Full-size WebP for the viewer; the grid itself only loads the small responsive versions
   const photos = items.map(el => {
     const img = el.querySelector('img');
-    return { src: el.dataset.full || img.currentSrc || img.src, alt: img.alt };
+    return { src: el.dataset.full || img.currentSrc || img.src, alt: img.alt, caption: el.querySelector('.gallery-cap')?.textContent || '' };
   });
 
   const lightbox = document.getElementById('lightbox');
@@ -330,7 +369,7 @@ function onActivate(el, handler) {
       lbImg.src = photo.src;
     }
     lbImg.alt = photo.alt;
-    lbCounter.textContent = `${index + 1} / ${photos.length}`;
+    lbCounter.textContent = `${index + 1} / ${photos.length}${photo.caption ? ` · ${photo.caption}` : ''}`;
 
     // warm the next photo so swiping feels instant
     new Image().src = photos[(index + 1) % photos.length].src;
@@ -371,4 +410,80 @@ function onActivate(el, handler) {
     if (e.key === 'ArrowRight') show(index + 1);
     dialog.trap(e);
   });
+})();
+
+/* ---- SERVICE-AREA MAP: 25-mile ring around Long Branch (Leaflet loads only when the map is near the screen) ---- */
+(function () {
+  const el = document.getElementById('serviceMap');
+  if (!el) return;
+
+  const HOME = [40.3043, -73.9924];
+  const RADIUS_M = 25 * 1609.344;
+  const ringBounds = () => L.latLng(HOME).toBounds(RADIUS_M * 2);   // square that just contains the ring (L exists once Leaflet has loaded)
+
+  function addAsset(tag, attrs) {
+    return new Promise((resolve, reject) => {
+      const node = Object.assign(document.createElement(tag), attrs);
+      node.onload = resolve;
+      node.onerror = reject;
+      document.head.appendChild(node);
+    });
+  }
+
+  function draw() {
+    const touch = L.Browser.mobile;
+    const map = L.map(el, {
+      zoomControl: false,
+      scrollWheelZoom: false,          // don't hijack page scrolling
+      dragging: !touch,                // one finger scrolls the page on phones; pinch still zooms
+      zoomAnimation: !reduceMotion.matches,
+      attributionControl: false
+    });
+    L.control.zoom({ position: 'topright' }).addTo(map);
+    L.control.attribution({ prefix: false, position: 'bottomright' }).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 14,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+    }).addTo(map);
+
+    L.circle(HOME, {
+      radius: RADIUS_M,
+      color: '#1d6f93',
+      weight: 3,
+      dashArray: '9 7',
+      fillColor: '#4fa8d0',
+      fillOpacity: .2
+    }).addTo(map);
+
+    L.marker(HOME, {
+      icon: L.divIcon({ className: '', html: '<div class="map-pin"></div>', iconSize: [18, 18] }),
+      keyboard: false
+    }).addTo(map).bindTooltip('Long Branch', { permanent: true, direction: 'bottom', offset: [0, 8], className: 'map-label' });
+
+    // "25 miles" tag on the ring's east edge
+    L.marker([HOME[0], HOME[1] + RADIUS_M / (111320 * Math.cos(HOME[0] * Math.PI / 180))], {
+      icon: L.divIcon({ className: '', html: '', iconSize: [0, 0] }),
+      interactive: false,
+      keyboard: false
+    }).addTo(map).bindTooltip('25 miles', { permanent: true, direction: 'left', offset: [-4, 0], className: 'map-label' });
+
+    map.fitBounds(ringBounds(), { padding: [34, 34] });
+    map.on('resize', () => map.fitBounds(ringBounds(), { padding: [34, 34], animate: false }));
+  }
+
+  function load() {
+    Promise.all([
+      addAsset('link', { rel: 'stylesheet', href: 'vendor/leaflet/leaflet.css' }),
+      addAsset('script', { src: 'vendor/leaflet/leaflet.js', async: true })
+    ]).then(draw).catch(() => { /* the "Open in Google Maps" link below still works */ });
+  }
+
+  if (!('IntersectionObserver' in window)) return load();
+  const io = new IntersectionObserver(entries => {
+    if (entries.some(e => e.isIntersecting)) {
+      io.disconnect();
+      load();
+    }
+  }, { rootMargin: '400px 0px' });
+  io.observe(el);
 })();
