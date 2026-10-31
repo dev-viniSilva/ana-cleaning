@@ -210,10 +210,50 @@ phoneInput?.addEventListener('blur', () => {
 
 /* ---- CONTACT FORM ---- */
 // Without JS this is a plain Formspree POST. With JS the same data is sent in the background so the
-// visitor stays on the page and sees a thank-you; if anything fails we fall back to the normal
-// submit, so a lead is never lost.
+// visitor stays on the page and sees a thank-you. If the send fails (after one retry) the form keeps
+// everything they typed and offers WhatsApp / text / email / call with the message already written,
+// so a lead is never lost.
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
+const formFallback = document.getElementById('formFallback');
+
+// One try, then one retry for network errors, timeouts and server errors (a 4xx will not get better).
+async function sendForm() {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 12000);
+    try {
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { Accept: 'application/json' },
+        signal: ctrl.signal
+      });
+      if (res.ok) return true;
+      if (res.status < 500) return false;
+    } catch (err) { /* offline, blocked or timed out */ }
+    finally { clearTimeout(timer); }
+    if (attempt === 0) await new Promise(r => setTimeout(r, 1200));
+  }
+  return false;
+}
+
+// Same message, ready to send by other means (the fields stay filled in as well)
+function showFallback() {
+  const v = name => (contactForm.elements[name]?.value || '').trim();
+  const lines = [
+    "Hi Ana, I'd like a cleaning quote.",
+    `Name: ${v('firstName')} ${v('lastName')}`.trim(),
+    `Phone: ${v('phone')}`,
+    `Service: ${v('service')}`
+  ];
+  if (v('message')) lines.push(`Message: ${v('message')}`);
+  const text = encodeURIComponent(lines.join('\n'));
+  document.getElementById('fbWhatsapp').href = 'https://wa.me/17176236050?text=' + text;
+  document.getElementById('fbSms').href = 'sms:+17176236050?&body=' + text;
+  document.getElementById('fbMail').href = 'mailto:anascarecleaning@gmail.com?subject=' + encodeURIComponent('Quote request from the website') + '&body=' + text;
+  formFallback.hidden = false;
+}
 
 function setStatus(kind, text) {
   formStatus.className = kind ? `cf-status is-${kind}` : 'cf-status';
@@ -238,22 +278,18 @@ contactForm?.addEventListener('submit', async e => {
   button.disabled = true;
   label.textContent = 'Sending…';
   setStatus('', '');
+  formFallback.hidden = true;
 
-  try {
-    const res = await fetch(contactForm.action, {
-      method: 'POST',
-      body: new FormData(contactForm),
-      headers: { Accept: 'application/json' }
-    });
-    if (!res.ok) throw new Error(`Formspree responded ${res.status}`);
+  const sent = await sendForm();
+  if (sent) {
     contactForm.reset();
     setStatus('success', 'Thank you! Your request was sent. Ana will be in touch personally within a few hours.');
-  } catch (err) {
-    contactForm.submit(); // regular browser POST (does not re-trigger this handler)
-  } finally {
-    button.disabled = false;
-    label.textContent = 'Send Request';
+  } else {
+    setStatus('error', "We couldn't send your request. Nothing is lost: your details are still in the form. Please send them to Ana another way:");
+    showFallback();
   }
+  button.disabled = false;
+  label.textContent = 'Send Request';
 });
 
 /* ---- DIALOG HELPERS (photo viewer + video player) ---- */

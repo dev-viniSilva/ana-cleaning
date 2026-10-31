@@ -3203,6 +3203,42 @@ section {
   color: #e05555;
 }
 
+.cf-fallback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cf-fallback[hidden] {
+  display: none;
+}
+
+.cf-fb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--cream);
+  border: 1px solid rgba(14, 31, 45, .14);
+  border-radius: 50px;
+  transition: background .3s, border-color .3s;
+}
+
+.cf-fb .icon {
+  color: var(--sky-text);
+}
+
+.cf-fb:hover {
+  background: var(--sky-l);
+  border-color: rgba(79, 168, 208, .4);
+}
+
 .cf-submit {
   position: relative;
   overflow: hidden;
