@@ -1,0 +1,15 @@
+# not part of the public site (Cloudflare Workers static assets)
+motion
+scripts
+.claude
+.git
+.gitignore
+.assetsignore
+wrangler.jsonc
+
+# unused / original-size media kept in the repo only as sources for scripts/optimize-media.sh
+img/video[6-9].mp4
+img/[0-9].jpg
+img/[0-9].jpeg
+img/logo.jpeg
+img/WhatsApp*

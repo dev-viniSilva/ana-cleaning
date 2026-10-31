@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+# developer files that are not part of the public site
+Disallow: /motion/
+Disallow: /scripts/
+Disallow: /.claude/
+
+Sitemap: https://anascarecleaning.com/sitemap.xml
