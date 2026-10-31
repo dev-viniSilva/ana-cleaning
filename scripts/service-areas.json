@@ -1,0 +1,343 @@
+{
+  "origin": "Long Branch, NJ",
+  "radiusMiles": 25,
+  "method": "Straight-line distance from the Long Branch city interior point to each municipality interior point",
+  "source": "U.S. Census Bureau 2024 Gazetteer, New Jersey county subdivisions (all 564 NJ municipalities)",
+  "counties": [
+    {
+      "name": "Monmouth County",
+      "towns": [
+        {
+          "name": "Long Branch",
+          "miles": 0
+        },
+        {
+          "name": "Aberdeen",
+          "miles": 15.5
+        },
+        {
+          "name": "Allenhurst",
+          "miles": 4.2
+        },
+        {
+          "name": "Asbury Park",
+          "miles": 5.1
+        },
+        {
+          "name": "Atlantic Highlands",
+          "miles": 8.2
+        },
+        {
+          "name": "Avon-by-the-Sea",
+          "miles": 7.3
+        },
+        {
+          "name": "Belmar",
+          "miles": 8.2
+        },
+        {
+          "name": "Bradley Beach",
+          "miles": 6.6
+        },
+        {
+          "name": "Brielle",
+          "miles": 13.7
+        },
+        {
+          "name": "Colts Neck",
+          "miles": 9.4
+        },
+        {
+          "name": "Deal",
+          "miles": 3.2
+        },
+        {
+          "name": "Eatontown",
+          "miles": 3.4
+        },
+        {
+          "name": "Englishtown",
+          "miles": 19.5
+        },
+        {
+          "name": "Fair Haven",
+          "miles": 5.3
+        },
+        {
+          "name": "Farmingdale",
+          "miles": 11.6
+        },
+        {
+          "name": "Freehold",
+          "miles": 15.3
+        },
+        {
+          "name": "Freehold Township",
+          "miles": 17
+        },
+        {
+          "name": "Hazlet",
+          "miles": 13
+        },
+        {
+          "name": "Highlands",
+          "miles": 7.5
+        },
+        {
+          "name": "Holmdel",
+          "miles": 11.1
+        },
+        {
+          "name": "Howell",
+          "miles": 14
+        },
+        {
+          "name": "Interlaken",
+          "miles": 4.4
+        },
+        {
+          "name": "Keansburg",
+          "miles": 13.9
+        },
+        {
+          "name": "Keyport",
+          "miles": 14.6
+        },
+        {
+          "name": "Lake Como",
+          "miles": 8.9
+        },
+        {
+          "name": "Little Silver",
+          "miles": 3.7
+        },
+        {
+          "name": "Loch Arbour",
+          "miles": 4.4
+        },
+        {
+          "name": "Manalapan",
+          "miles": 18.8
+        },
+        {
+          "name": "Manasquan",
+          "miles": 12.9
+        },
+        {
+          "name": "Marlboro",
+          "miles": 14.5
+        },
+        {
+          "name": "Matawan",
+          "miles": 15.2
+        },
+        {
+          "name": "Middletown",
+          "miles": 8.7
+        },
+        {
+          "name": "Millstone",
+          "miles": 24
+        },
+        {
+          "name": "Monmouth Beach",
+          "miles": 2.8
+        },
+        {
+          "name": "Neptune City",
+          "miles": 6.9
+        },
+        {
+          "name": "Neptune Township",
+          "miles": 6.6
+        },
+        {
+          "name": "Ocean Township",
+          "miles": 3.6
+        },
+        {
+          "name": "Oceanport",
+          "miles": 2.2
+        },
+        {
+          "name": "Red Bank",
+          "miles": 5.5
+        },
+        {
+          "name": "Rumson",
+          "miles": 4.7
+        },
+        {
+          "name": "Sea Bright",
+          "miles": 4.5
+        },
+        {
+          "name": "Sea Girt",
+          "miles": 11.6
+        },
+        {
+          "name": "Shrewsbury",
+          "miles": 4.2
+        },
+        {
+          "name": "Shrewsbury Township",
+          "miles": 4.5
+        },
+        {
+          "name": "Spring Lake",
+          "miles": 10
+        },
+        {
+          "name": "Spring Lake Heights",
+          "miles": 10.5
+        },
+        {
+          "name": "Tinton Falls",
+          "miles": 5.9
+        },
+        {
+          "name": "Union Beach",
+          "miles": 14.2
+        },
+        {
+          "name": "Wall Township",
+          "miles": 10.6
+        },
+        {
+          "name": "West Long Branch",
+          "miles": 1.7
+        }
+      ],
+      "featured": [
+        "Long Branch",
+        "Asbury Park",
+        "Red Bank",
+        "Freehold",
+        "Middletown",
+        "Wall Township",
+        "Neptune Township",
+        "Howell",
+        "Holmdel",
+        "Rumson"
+      ]
+    },
+    {
+      "name": "Ocean County",
+      "towns": [
+        {
+          "name": "Bay Head",
+          "miles": 15.9
+        },
+        {
+          "name": "Brick Township",
+          "miles": 17.3
+        },
+        {
+          "name": "Jackson Township",
+          "miles": 24.2
+        },
+        {
+          "name": "Lakewood",
+          "miles": 18.7
+        },
+        {
+          "name": "Lavallette",
+          "miles": 22.9
+        },
+        {
+          "name": "Mantoloking",
+          "miles": 16.8
+        },
+        {
+          "name": "Point Pleasant",
+          "miles": 15.6
+        },
+        {
+          "name": "Point Pleasant Beach",
+          "miles": 14.3
+        },
+        {
+          "name": "Seaside Heights",
+          "miles": 24.7
+        },
+        {
+          "name": "Toms River",
+          "miles": 22.8
+        }
+      ],
+      "featured": [
+        "Toms River",
+        "Lakewood",
+        "Brick Township",
+        "Point Pleasant",
+        "Jackson Township",
+        "Seaside Heights"
+      ]
+    },
+    {
+      "name": "Middlesex County",
+      "towns": [
+        {
+          "name": "Carteret",
+          "miles": 23.5
+        },
+        {
+          "name": "East Brunswick",
+          "miles": 24.3
+        },
+        {
+          "name": "Edison",
+          "miles": 23.8
+        },
+        {
+          "name": "Helmetta",
+          "miles": 23.5
+        },
+        {
+          "name": "Jamesburg",
+          "miles": 24
+        },
+        {
+          "name": "Monroe Township",
+          "miles": 23.2
+        },
+        {
+          "name": "Old Bridge",
+          "miles": 18.4
+        },
+        {
+          "name": "Perth Amboy",
+          "miles": 21.5
+        },
+        {
+          "name": "Sayreville",
+          "miles": 21
+        },
+        {
+          "name": "South Amboy",
+          "miles": 20.1
+        },
+        {
+          "name": "South River",
+          "miles": 22.9
+        },
+        {
+          "name": "Spotswood",
+          "miles": 22.3
+        },
+        {
+          "name": "Woodbridge",
+          "miles": 24.3
+        }
+      ],
+      "featured": [
+        "Edison",
+        "Woodbridge",
+        "Old Bridge",
+        "Sayreville",
+        "East Brunswick",
+        "Perth Amboy"
+      ]
+    }
+  ]
+}
