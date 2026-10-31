@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
-# Generates responsive WebP images + video poster frames into img/opt/.
-# Originals in img/ are left untouched. Requires ffmpeg (with libwebp).
-# Usage: bash scripts/optimize-media.sh
+# Generates the responsive WebP photos, video poster frames and logo icons that the
+# site actually serves, into img/opt/. Originals in img/ are never modified.
+# Requires ffmpeg (with libwebp).    Usage: bash scripts/optimize-media.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT=img/opt
-mkdir -p "$OUT"
+rm -rf "$OUT" && mkdir -p "$OUT"
 
-# name:source  (widths below are generated for each)
-PHOTOS=(
-  "1:img/1.jpg" "2:img/2.jpg" "3:img/3.jpg" "4:img/4.jpg"
-  "5:img/5.jpeg" "6:img/6.jpeg" "7:img/7.jpeg" "8:img/8.jpeg"
-)
-WIDTHS=(360 640 960 1400)
+# photos used on the page (name:source)
+PHOTOS=("1:img/1.jpg" "3:img/3.jpg" "5:img/5.jpeg" "7:img/7.jpeg" "8:img/8.jpeg"
+        "9:img/WhatsApp Image 2026-10-27 at 9.23.14 PM.jpeg"
+        "10:img/WhatsApp Image 2026-10-27 at 9.39.02 PM.jpeg")
+WIDTHS=(360 520 720 960 1400)
 
 for entry in "${PHOTOS[@]}"; do
   name="${entry%%:*}"; src="${entry#*:}"
@@ -22,15 +21,26 @@ for entry in "${PHOTOS[@]}"; do
   [ "$srcw" -lt "${WIDTHS[-1]}" ] && sizes+=("$srcw")
   for w in "${sizes[@]}"; do
     [ "$w" -gt "$srcw" ] && continue
-    ffmpeg -y -v error -i "$src" -vf "scale=$w:-2:flags=lanczos" -c:v libwebp -quality 78 -compression_level 6 "$OUT/$name-$w.webp"
+    ffmpeg -y -v error -i "$src" -vf "scale=$w:-2:flags=lanczos" -c:v libwebp -quality 72 -compression_level 6 "$OUT/$name-$w.webp"
   done
 done
 
-# Video posters (real frame from each clip, shown instead of loading the video)
-declare -A POSTER_AT=( [1]=2.0 [2]=1.5 [3]=15 [4]=15 [5]=15 )
-for n in 1 2 3 4 5; do
-  ffmpeg -y -v error -ss "${POSTER_AT[$n]}" -i "img/video$n.mp4" -frames:v 1 \
-    -vf "scale=540:-2:flags=lanczos" -c:v libwebp -quality 74 "$OUT/video$n-poster.webp"
+# one real frame from each clip, shown on the tile instead of loading the video (name:second)
+POSTERS=("1:2" "2:1.5" "3:15" "4:15" "5:15")
+for entry in "${POSTERS[@]}"; do
+  n="${entry%%:*}"; at="${entry#*:}"
+  ffmpeg -y -v error -ss "$at" -i "img/video$n.mp4" -frames:v 1 \
+    -vf "scale=720:1280:flags=lanczos" -c:v libwebp -quality 72 "$OUT/video$n-poster.webp"
 done
-for w in 96; do ffmpeg -y -v error -i img/logo.jpeg -vf "scale=$w:$w:flags=lanczos" -c:v libwebp -quality 85 "$OUT/logo-$w.webp"; done
-echo "done"; ls -la "$OUT" | head -60
+
+# logo for nav / badges / footer
+ffmpeg -y -v error -i img/logo.jpeg -vf "scale=96:96:flags=lanczos" -c:v libwebp -quality 85 "$OUT/logo-96.webp"
+
+# favicon + home-screen icons (square logo)
+mkdir -p icons
+ffmpeg -y -v error -i img/logo.jpeg -vf "scale=180:180:flags=lanczos" icons/apple-touch-icon.png
+ffmpeg -y -v error -i img/logo.jpeg -vf "scale=192:192:flags=lanczos" icons/icon-192.png
+ffmpeg -y -v error -i img/logo.jpeg -vf "scale=512:512:flags=lanczos" icons/icon-512.png
+ffmpeg -y -v error -i img/logo.jpeg -vf "scale=48:48:flags=lanczos" favicon.ico
+
+echo "done"; du -sh "$OUT"; ls "$OUT" | wc -l

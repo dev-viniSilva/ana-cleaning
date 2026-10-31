@@ -1,5 +1,6 @@
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
 import { HeroLoop } from "./HeroLoop";
+import { OgCard } from "./OgCard";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -13,6 +14,8 @@ export const RemotionRoot: React.FC = () => {
         width={720}
         height={900}
       />
+      {/* Open Graph / Twitter share image (npm run render:og) */}
+      <Still id="OgCard" component={OgCard} width={1200} height={630} />
     </>
   );
 };
