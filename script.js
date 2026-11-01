@@ -263,6 +263,9 @@ function setStatus(kind, text) {
 contactForm?.addEventListener('submit', async e => {
   e.preventDefault();
 
+  // already sending (double click, Enter key) or already sent and heading to /thank-you
+  if (contactForm.dataset.busy) return;
+
   if (phoneInput && !isValidPhone(phoneInput.value)) {
     phoneInput.classList.add('invalid');
     phoneError.style.display = 'block';
@@ -275,6 +278,7 @@ contactForm?.addEventListener('submit', async e => {
 
   const button = contactForm.querySelector('.cf-submit');
   const label = button.querySelector('span');
+  contactForm.dataset.busy = '1';
   button.disabled = true;
   label.textContent = 'Sending…';
   setStatus('', '');
@@ -282,14 +286,31 @@ contactForm?.addEventListener('submit', async e => {
 
   const sent = await sendForm();
   if (sent) {
+    // Formspree confirmed. Leave the form locked and go to /thank-you, which counts the Google Ads
+    // conversion exactly once (see ads.js). If storage is blocked we count it here instead, then go.
     contactForm.reset();
-    setStatus('success', 'Thank you! Your request was sent. Ana will be in touch personally within a few hours.');
-  } else {
-    setStatus('error', "We couldn't send your request. Nothing is lost: your details are still in the form. Please send them to Ana another way:");
-    showFallback();
+    label.textContent = 'Sent';
+    const goToThankYou = () => window.location.assign('/thank-you');
+    if (!window.anasAds) goToThankYou();
+    else if (window.anasAds.stashLead()) goToThankYou();
+    else window.anasAds.fireNow(goToThankYou);
+    return;
   }
+
+  setStatus('error', "We couldn't send your request. Nothing is lost: your details are still in the form. Please send them to Ana another way:");
+  showFallback();
+  delete contactForm.dataset.busy;
   button.disabled = false;
   label.textContent = 'Send Request';
+});
+
+// coming back from /thank-you with the back button: the form must be usable again
+window.addEventListener('pageshow', e => {
+  if (!e.persisted || !contactForm) return;
+  const button = contactForm.querySelector('.cf-submit');
+  delete contactForm.dataset.busy;
+  button.disabled = false;
+  button.querySelector('span').textContent = 'Send Request';
 });
 
 /* ---- DIALOG HELPERS (photo viewer + video player) ---- */
